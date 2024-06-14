@@ -1,24 +1,28 @@
-import { Field, VerificationKey, ZkProgram } from "o1js";
-import { NodeProofLeft, NodeProofRight } from "./data-structs.js";
+import { Field, Undefined, VerificationKey, ZkProgram } from "o1js";
+import { NodeProofLeft, NodeProofRight, SubtreeCarry } from "./data-structs.js";
 
 const node = ZkProgram({
     name: 'node',
-    publicInput: Field,
-    publicOutput: Field,
+    publicInput: Undefined,
+    publicOutput: SubtreeCarry,
     methods: {
       compute: {
         privateInputs: [NodeProofLeft, VerificationKey, NodeProofRight, VerificationKey],
         async method(
-            publicInput: Field, 
             piLeft: NodeProofLeft, 
             vkLeft: VerificationKey, 
             piRight: NodeProofRight, 
             vkRight: VerificationKey
         ) {
-          piLeft.verify(vkLeft); 
-          piRight.verify(vkRight); 
+            piLeft.verify(vkLeft); 
+            piRight.verify(vkRight); 
 
-          return piRight.publicOutput;
+            piLeft.publicOutput.rightOut.assertEquals(piRight.publicOutput.leftIn);
+
+            return new SubtreeCarry({
+                leftIn: piLeft.publicOutput.leftIn, 
+                rightOut: piRight.publicOutput.rightOut
+            });
         },
       },
     },

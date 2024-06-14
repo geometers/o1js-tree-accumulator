@@ -1,4 +1,4 @@
-import { DynamicProof, Field } from "o1js"
+import { DynamicProof, Field, Struct, Undefined } from "o1js"
 
 class ZkpProofLeft extends DynamicProof<Field, Field> {
     static publicInputType = Field;
@@ -12,16 +12,21 @@ class ZkpProofRight extends DynamicProof<Field, Field> {
     static maxProofsVerified = 0 as const;
 }
 
-class NodeProofLeft extends DynamicProof<Field, Field> {
-    static publicInputType = Field;
-    static publicOutputType = Field;
+class SubtreeCarry extends Struct({
+    leftIn: Field, 
+    rightOut: Field
+}) {};
+
+class NodeProofLeft extends DynamicProof<Undefined, SubtreeCarry> {
+    static publicInputType = Undefined;
+    static publicOutputType = SubtreeCarry;
     static maxProofsVerified = 2 as const;
 }
 
-class NodeProofRight extends DynamicProof<Field, Field> {
-    static publicInputType = Field;
-    static publicOutputType = Field;
+class NodeProofRight extends DynamicProof<Undefined, SubtreeCarry> {
+    static publicInputType = Undefined;
+    static publicOutputType = SubtreeCarry;
     static maxProofsVerified = 2 as const;
 }
 
-export { ZkpProofLeft, ZkpProofRight, NodeProofLeft, NodeProofRight }
+export { ZkpProofLeft, ZkpProofRight, NodeProofLeft, NodeProofRight, SubtreeCarry }
