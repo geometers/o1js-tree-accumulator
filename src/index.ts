@@ -2,7 +2,7 @@ import { Field } from "o1js";
 import { layer1 } from "./layer1.js";
 import { node } from "./node.js";
 import { zkp1, zkp2, zkp3, zkp4, zkp5, zkp6, zkp7, zkp8 } from "./zkps.js"
-import { NodeProofLeft, NodeProofRight } from "./data-structs.js";
+import { NodeProofLeft, NodeProofRight, ZkpProofLeft, ZkpProofRight } from "./data-structs.js";
 
 const vk1 = (await zkp1.compile()).verificationKey;
 const vk2 = (await zkp2.compile()).verificationKey;
@@ -29,11 +29,11 @@ const p8 = await zkp8.compute(Field(1), Field(1));
 
 console.log("base proofs ready");
 
-const l1 = await layer1.compute(Field(1), NodeProofLeft.fromProof(p1), vk1, NodeProofRight.fromProof(p2), vk2);
-const l2 = await layer1.compute(Field(1), NodeProofLeft.fromProof(p3), vk3, NodeProofRight.fromProof(p4), vk4);
+const l1 = await layer1.compute(Field(1), ZkpProofLeft.fromProof(p1), vk1, ZkpProofRight.fromProof(p2), vk2);
+const l2 = await layer1.compute(Field(1), ZkpProofLeft.fromProof(p3), vk3, ZkpProofRight.fromProof(p4), vk4);
 
-const l3 = await layer1.compute(Field(1), NodeProofLeft.fromProof(p5), vk5, NodeProofRight.fromProof(p6), vk6);
-const l4 = await layer1.compute(Field(1), NodeProofLeft.fromProof(p7), vk7, NodeProofRight.fromProof(p8), vk8);
+const l3 = await layer1.compute(Field(1), ZkpProofLeft.fromProof(p5), vk5, ZkpProofRight.fromProof(p6), vk6);
+const l4 = await layer1.compute(Field(1), ZkpProofLeft.fromProof(p7), vk7, ZkpProofRight.fromProof(p8), vk8);
 
 console.log("layers proof done");
 
