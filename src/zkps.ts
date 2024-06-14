@@ -1,4 +1,5 @@
-import { Field, ZkProgram } from "o1js";
+import { Field, Poseidon, Struct, ZkProgram } from "o1js";
+import { FpC } from "./field.js";
 
 const zkp1 = ZkProgram({
     name: 'zkp1',
@@ -6,8 +7,8 @@ const zkp1 = ZkProgram({
     publicOutput: Field,
     methods: {
       compute: {
-        privateInputs: [Field],
-        async method(publicInput: Field, privateInput: Field) {
+        privateInputs: [Field, FpC.provable],
+        async method(publicInput: Field, privateInput: Field, x: FpC) {
           return publicInput.mul(privateInput);
         },
       },

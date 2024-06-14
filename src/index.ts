@@ -3,6 +3,7 @@ import { layer1 } from "./layer1.js";
 import { node } from "./node.js";
 import { zkp1, zkp2, zkp3, zkp4, zkp5, zkp6, zkp7, zkp8 } from "./zkps.js"
 import { NodeProofLeft, NodeProofRight, ZkpProofLeft, ZkpProofRight } from "./data-structs.js";
+import { FpC } from "./field.js";
 
 const vk1 = (await zkp1.compile()).verificationKey;
 const vk2 = (await zkp2.compile()).verificationKey;
@@ -18,7 +19,7 @@ const nodeVk = (await node.compile()).verificationKey;
 
 console.log("all loaded");
 
-const p1 = await zkp1.compute(Field(1), Field(1)); 
+const p1 = await zkp1.compute(Field(1), Field(1), FpC.from(1n)); 
 const p2 = await zkp2.compute(p1.publicOutput, Field(1)); 
 const p3 = await zkp3.compute(p2.publicOutput, Field(1)); 
 const p4 = await zkp4.compute(p3.publicOutput, Field(1)); 
